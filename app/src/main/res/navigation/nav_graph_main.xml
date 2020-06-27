@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_main.xml"
+    app:startDestination="@id/explore">
+
+    <fragment
+        android:id="@+id/explore"
+        android:name="com.k3labs.githubbrowser.ui.explore.ExploreFragment"
+        android:label="Explore">
+        <action
+            android:id="@+id/showRepo"
+            app:destination="@id/repoFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/repoFragment"
+        android:name="com.k3labs.githubbrowser.ui.repo.RepoFragment"
+        android:label="Repo {name}" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <argument
+            android:name="owner"
+            app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <action
+            android:id="@+id/showUser"
+            app:destination="@id/userFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fav"
+        android:name="com.k3labs.githubbrowser.ui.fav.FavFragment"
+        android:label="Favs">
+
+        <action
+            android:id="@+id/showRepo"
+            app:destination="@id/repoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.k3labs.githubbrowser.ui.user.UserFragment"
+        android:label="User {login}" >
+        <argument
+            android:name="login"
+            app:argType="string"/>
+        <argument
+            android:name="avatarUrl"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+
+        <action
+            android:id="@+id/showRepo"
+            app:destination="@id/repoFragment" />
+    </fragment>
+
+</navigation>

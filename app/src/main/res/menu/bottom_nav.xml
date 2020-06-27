@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/explore"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:contentDescription="@string/a11y_bnav_explore"
+            android:title="@string/bnav_explore" />
+    <item
+            android:id="@+id/fav"
+            android:icon="@drawable/ic_bookmark_border_black_24dp"
+            android:contentDescription="@string/a11y_bnav_fav"
+            android:title="@string/bnav_fav" />
+    <item
+            android:id="@+id/user"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:contentDescription="@string/a11y_bnav_profile"
+            android:title="@string/bnav_profile" />
+</menu>

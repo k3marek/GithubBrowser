@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.k3labs.githubbrowser.vo.Status" />
+
+        <import type="com.k3labs.githubbrowser.vo.Resource" />
+
+        <import type="androidx.lifecycle.LiveData" />
+
+        <import type="com.k3labs.githubbrowser.vo.User" />
+
+        <import type="com.bumptech.glide.request.RequestListener" />
+
+        <import type="android.graphics.drawable.Drawable" />
+
+        <variable
+            name="args"
+            type="com.k3labs.githubbrowser.ui.user.UserFragmentArgs" />
+
+        <variable
+            name="userResource"
+            type="Resource" />
+
+        <variable
+            name="user"
+            type="LiveData&lt;Resource&lt;User>>" />
+
+        <variable
+            name="retryCallback"
+            type="com.k3labs.githubbrowser.ui.common.RetryCallback" />
+
+        <variable
+            name="imageRequestListener"
+            type="com.bumptech.glide.request.RequestListener&lt;Drawable>" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="154dp">
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="@dimen/photo_size"
+                android:layout_height="@dimen/photo_size"
+                android:background="@mipmap/ic_launcher"
+                android:contentDescription="@string/a11y_contributor_avatar"
+                android:scaleType="centerCrop"
+                app:errorDrawable="@{@drawable/ic_person_black_24dp}"
+                app:imageRequestListener="@{imageRequestListener}"
+                app:imageUrl="@{user.data.avatarUrl ?? args.avatarUrl}"
+                app:placeholderDrawable="@{@drawable/ic_person_black_24dp}"
+                app:transitionName="@{args.login}" />
+
+            <TextView
+                android:id="@+id/repo_item_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:contentDescription="@string/a11y_contributor_name"
+                android:text="@{user.data.name ?? user.data.login}"
+                app:layout_constraintStart_toEndOf="@+id/avatar"
+                app:layout_constraintTop_toTopOf="parent"
+                app:visibleIf="@{user.available}"
+                tools:text="albert einstein" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/repo_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header"
+            tools:listitem="@layout/repo_list_item" />
+
+        <include
+            layout="@layout/layout_loading_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:callback="@{() -> retryCallback.retry()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:resource="@{(Resource) user}" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

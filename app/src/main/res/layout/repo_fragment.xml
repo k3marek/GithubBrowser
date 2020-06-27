@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.k3labs.githubbrowser.vo.Status" />
+
+        <import type="com.k3labs.githubbrowser.vo.Resource" />
+
+        <import type="androidx.lifecycle.LiveData" />
+
+        <import type="com.k3labs.githubbrowser.vo.RepoAndFav" />
+
+        <variable
+            name="repoAndFav"
+            type="LiveData&lt;Resource&lt;com.k3labs.githubbrowser.vo.RepoAndFav>>" />
+
+        <variable
+            name="contributorsStatus"
+            type="Status" />
+
+        <variable
+            name="retryCallback"
+            type="com.k3labs.githubbrowser.ui.common.RetryCallback" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/repo_item_title_tv"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@{@string/repo_full_name(repoAndFav.data.repo.owner.login, repoAndFav.data.repo.name)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visibleIf="@{repoAndFav.available}"
+            tools:text="name of the repo" />
+
+        <TextView
+            android:id="@+id/description"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@{repoAndFav.data.repo.description}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/repo_item_title_tv"
+            app:visibleIf="@{repoAndFav.available}"
+            tools:text="description of the repo" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/contributor_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/description"
+            tools:listitem="@layout/contributor_list_item" />
+
+        <include
+            layout="@layout/layout_loading_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:callback="@{() -> retryCallback.retry()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:resource="@{(Resource) repoAndFav}" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

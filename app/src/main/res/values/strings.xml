@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Github browser</string>
+    <string name="bnav_explore">Explore</string>
+    <string name="a11y_bnav_explore">Show Explore nav button</string>
+    <string name="bnav_fav">Fav</string>
+    <string name="a11y_bnav_fav">Show Fav nav button</string>
+    <string name="bnav_profile">Profile</string>
+    <string name="a11y_bnav_profile">Show Profile nav button</string>
+
+    <string name="repo_full_name"><b>%s</b>/%s</string>
+
+    <string name="search_hint">Search Github repos</string>
+    <string name="retry">Retry</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="empty_search_result">No results for<b>%s</b></string>
+
+    <string name="menu_switch_fav">Switch fav</string>
+
+    <string name="a11y_contributor_avatar">avatar</string>
+    <string name="a11y_contributor_name">User name</string>
+    <string name="a11y_switch_fav_btn">Switch fav button</string>
+
+</resources>
