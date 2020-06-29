@@ -1,6 +1,7 @@
 package com.k3labs.githubbrowser.ui.fav
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
@@ -36,21 +37,23 @@ class FavListAdapter(
     override fun createBinding(parent: ViewGroup, viewType: Int): RepoAndFavListItemBinding {
         val binding = DataBindingUtil.inflate<RepoAndFavListItemBinding>(
             LayoutInflater.from(parent.context),
-            R.layout.repo_list_item,
+            R.layout.repo_and_fav_list_item,
             parent,
             false,
             dataBindingComponent
         )
-        binding.setClickListenerItem { view ->
-            binding.repoAndFav?.let {
-                navigateToDetailsCallback?.invoke(it)
-            }
-        }
-        binding.root.setOnClickListener {
+        binding.clickListenerFav = View.OnClickListener { view ->
             binding.repoAndFav?.let {
                 favClickCallback?.invoke(it)
             }
         }
+        
+        binding.clickListenerItem = View.OnClickListener {
+            binding.repoAndFav?.let {
+                navigateToDetailsCallback?.invoke(it)
+            }
+        }
+
         return binding
     }
 

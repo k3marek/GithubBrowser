@@ -57,8 +57,9 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
                 android:contentDescription="@string/a11y_switch_fav_btn"
-                app:srcCompat="@drawable/ic_bookmark_border_black_24dp"
+                android:focusable="true"
                 android:onClick="@{clickListenerFav}"
                 android:tint="@color/colorAccent"
                 app:favToggleImage="@{repoAndFav.fav}"
@@ -66,7 +67,8 @@
                 app:layout_constraintDimensionRatio="h,1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/ic_bookmark_border_black_24dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
