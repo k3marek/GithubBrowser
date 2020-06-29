@@ -27,7 +27,7 @@ class RepoRepository @Inject constructor(
     private val repoSearchResultDao: RepoSearchResultDao,
     private val githubService: GithubService
 ) {
-    private val repoListRateLimit = RateLimiter<String>(1, TimeUnit.MINUTES)
+    private val repoListRateLimit = RateLimiter<String>(2, TimeUnit.MINUTES)
 
     fun loadRepos(owner: String): Flow<Resource<List<RepoAndFav>>> {
         return networkBoundResource(

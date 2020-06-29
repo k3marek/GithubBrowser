@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.k3labs.githubbrowser.vo.Resource" />
+
+        <import type="com.k3labs.githubbrowser.vo.Status" />
+
+        <variable
+            name="notVisible"
+            type="Boolean" />
+
+        <variable
+            name="resource"
+            type="Resource" />
+
+        <variable
+            name="actiontitle"
+            type="String" />
+
+        <variable
+            name="message"
+            type="String" />
+
+        <variable
+            name="messagesecondary"
+            type="String" />
+
+        <variable
+            name="actionvisible"
+            type="Boolean" />
+
+        <variable
+            name="callback"
+            type="com.k3labs.githubbrowser.ui.common.EmptyStateCallback" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/emppy_state_cl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:visibleIf="@{!notVisible &amp;&amp; resource.isEmpty}">
+
+
+        <TextView
+            android:id="@+id/msg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@{message ?? @string/default_empty_msg}"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:layout_constraintBottom_toTopOf="@+id/secondary_message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginBottom="16dp"
+            app:visibleIf="@{resource.isEmpty}"
+            tools:text="@string/default_empty_msg" />
+
+        <TextView
+            android:id="@+id/secondary_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@{messagesecondary ?? @string/default_empty_secondary_msg}"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            app:layout_constraintBottom_toTopOf="@+id/add_new"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/msg"
+            app:layout_goneMarginBottom="16dp"
+            app:visibleIf="@{resource.isEmpty}"
+            tools:text="@string/default_empty_secondary_msg" />
+
+        <Button
+            android:id="@+id/add_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:onClick="@{() -> callback.invoke()}"
+            android:text="@{actiontitle ?? @string/default_empty_action_search}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/secondary_message"
+            app:visibleIf="@{safeUnbox(actionvisible)}" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

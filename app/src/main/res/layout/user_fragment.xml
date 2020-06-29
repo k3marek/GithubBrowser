@@ -95,21 +95,40 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/header"
+            app:visibleIf="@{userResource.status != Status.ERROR}"
             tools:listitem="@layout/repo_list_item" />
 
         <include
-            layout="@layout/layout_loading_state"
-            android:layout_width="wrap_content"
+            android:id="@+id/loading_state"
+            layout="@layout/loading_state"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             app:callback="@{() -> retryCallback.retry()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:resource="@{(Resource) user}" />
+            app:resource="@{userResource}"
+            tools:visibility="visible" />
+
+        <include
+            android:id="@+id/empty_state"
+            layout="@layout/empty_state"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:actionvisible="@{false}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header"
+            app:message="@{@string/empty_state_no_repos}"
+            app:resource="@{userResource}"
+            tools:visibility="visible" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

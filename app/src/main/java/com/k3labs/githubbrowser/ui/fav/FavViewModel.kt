@@ -6,6 +6,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.k3labs.githubbrowser.repository.FavRepoRepository
 import com.k3labs.githubbrowser.vo.RepoAndFav
+import com.k3labs.githubbrowser.vo.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -13,7 +14,7 @@ import javax.inject.Inject
 class FavViewModel @Inject constructor(private val favRepoRepository: FavRepoRepository) :
     ViewModel() {
 
-    val favRepos : LiveData<List<RepoAndFav>?> = favRepoRepository.loadFavRepos().asLiveData()
+    val favRepos : LiveData<Resource<List<RepoAndFav>?>> = favRepoRepository.loadFavRepos().asLiveData()
 
     fun switchFav(fav: RepoAndFav) {
         viewModelScope.launch {

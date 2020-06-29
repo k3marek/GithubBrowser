@@ -16,8 +16,8 @@ import com.k3labs.githubbrowser.R
 import com.k3labs.githubbrowser.binding.FragmentDataBindingComponent
 import com.k3labs.githubbrowser.databinding.FavFragmentBinding
 import com.k3labs.githubbrowser.di.Injectable
+import com.k3labs.githubbrowser.ui.common.EmptyStateCallback
 import com.k3labs.githubbrowser.ui.common.RetryCallback
-import com.k3labs.githubbrowser.ui.explore.RepoAndFavListAdapter
 import com.k3labs.githubbrowser.util.autoCleared
 import javax.inject.Inject
 
@@ -72,17 +72,23 @@ class FavFragment : Fragment(), Injectable {
         binding.repos.adapter = adapter
 
 
-        binding.callback = object : RetryCallback {
+        binding.retryCallback = object : RetryCallback {
             override fun retry() {
                 favViewModel.refresh()
             }
         }
-        subscribeUi()
+        binding.emptyCallback = object : EmptyStateCallback {
+            override fun invoke() {
+                navController().navigate(FavFragmentDirections.showExplore())
+            }
+        }
+        subscribeUi(binding)
     }
 
-    private fun subscribeUi() {
+    private fun subscribeUi(binding: FavFragmentBinding) {
         favViewModel.favRepos.observe(viewLifecycleOwner, Observer { result ->
-            adapter.submitList(result)
+            binding.reposResource = result
+            adapter.submitList(result?.data)
         })
     }
 

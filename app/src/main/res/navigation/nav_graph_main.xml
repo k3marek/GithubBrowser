@@ -40,6 +40,9 @@
         <action
             android:id="@+id/showRepo"
             app:destination="@id/repoFragment" />
+        <action
+            android:id="@+id/showExplore"
+            app:destination="@id/explore" />
     </fragment>
 
     <fragment

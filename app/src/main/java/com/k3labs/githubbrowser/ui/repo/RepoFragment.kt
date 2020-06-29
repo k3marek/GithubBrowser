@@ -90,7 +90,7 @@ class RepoFragment : Fragment(), Injectable {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Timber.v("onViewCreated params ${params.id}")
+//        Timber.v("onViewCreated params ${params.id}")
         repoViewModel.setId(params.id, params.owner, params.name)
 
         binding.lifecycleOwner = viewLifecycleOwner
@@ -117,13 +117,12 @@ class RepoFragment : Fragment(), Injectable {
     private fun subscribeUi(binding: RepoFragmentBinding) {
         binding.repoAndFav = repoViewModel.repo
         repoViewModel.repo.observe(viewLifecycleOwner) {
-//            Timber.v("repo fav ${it.data?.isFav ?: "null"}")
+//            Timber.v("repo owner ${it.data?.repo?.owner ?: "null"}")
             if (::menuItemSwitchFav.isInitialized) {
                 menuItemSwitchFav.isEnabled = it.data != null
             }
         }
         repoViewModel.fav.observe(viewLifecycleOwner) {
-            Timber.v("repo fav ${it != null}")
             if (::menuItemSwitchFav.isInitialized) {
                 updateFavMenuIcon(it != null)
             }

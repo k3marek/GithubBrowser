@@ -86,13 +86,30 @@ class ExploreFragment : Fragment(), Injectable {
                 exploreViewModel.refresh()
             }
         }
-        subscribeUi()
+        subscribeUi(binding)
     }
 
-    private fun subscribeUi() {
+    private fun subscribeUi(binding: ExploreFragmentBinding) {
         exploreViewModel.results.observe(viewLifecycleOwner, Observer { results ->
-            if (results != null && results.isAvailable()) {
-                adapter.submitList(results.data)
+            adapter.submitList(results?.data)
+            binding.searchResult = results
+            binding.emptyStateMessage =
+                if (results != null && results.isEmpty() && exploreViewModel.query.value?.isNotEmpty() == true) {
+                    getString(R.string.empty_search_result, exploreViewModel.query.value!!)
+                } else {
+                    getString(R.string.empty_state_no_repos)
+                }
+
+        })
+        exploreViewModel.loadMoreStatus.observe(viewLifecycleOwner, Observer { loadingMore ->
+            if (loadingMore == null) {
+                binding.loadingMore = false
+            } else {
+                binding.loadingMore = loadingMore.isRunning
+                val error = loadingMore.errorMessageIfNotHandled
+                if (error != null) {
+                    Snackbar.make(binding.loadMoreBar, error, Snackbar.LENGTH_LONG).show()
+                }
             }
         })
     }
@@ -130,22 +147,6 @@ class ExploreFragment : Fragment(), Injectable {
                 val lastPosition = layoutManager.findLastVisibleItemPosition()
                 if (lastPosition == adapter.itemCount - 1) {
                     exploreViewModel.loadNextPage()
-                }
-            }
-        })
-        binding.searchResult = exploreViewModel.results
-        exploreViewModel.results.observe(viewLifecycleOwner, Observer { result ->
-            adapter.submitList(result?.data)
-        })
-
-        exploreViewModel.loadMoreStatus.observe(viewLifecycleOwner, Observer { loadingMore ->
-            if (loadingMore == null) {
-                binding.loadingMore = false
-            } else {
-                binding.loadingMore = loadingMore.isRunning
-                val error = loadingMore.errorMessageIfNotHandled
-                if (error != null) {
-                    Snackbar.make(binding.loadMoreBar, error, Snackbar.LENGTH_LONG).show()
                 }
             }
         })

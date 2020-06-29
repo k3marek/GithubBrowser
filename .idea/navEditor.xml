@@ -40,6 +40,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_fav_to_explore">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="showRepo">
                               <value>
                                 <LayoutPositions />
@@ -55,8 +60,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="301" />
-                            <option name="y" value="454" />
+                            <option name="x" value="510" />
+                            <option name="y" value="431" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -76,8 +81,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-21" />
-                            <option name="y" value="474" />
+                            <option name="x" value="132" />
+                            <option name="y" value="439" />
                           </Point>
                         </option>
                         <option name="myPositions">

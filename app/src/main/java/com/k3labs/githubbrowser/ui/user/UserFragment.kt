@@ -123,15 +123,16 @@ class UserFragment : Fragment(), Injectable {
             }
         )
         binding.repoList.adapter = adapter
-        subscribeUi()
+        subscribeUi(binding)
     }
 
-    private fun subscribeUi() {
+    private fun subscribeUi(binding: UserFragmentBinding) {
         userViewModel.repositories.observe(viewLifecycleOwner, Observer { repos ->
             adapter.submitList(repos?.data)
+            binding.userResource = repos
         })
         userViewModel.user.observe(viewLifecycleOwner, Observer {
-            Timber.v("User ${it.status} ${it.data?.login}")
+//            Timber.v("User ${it.status} ${it.data?.login}")
         })
     }
 

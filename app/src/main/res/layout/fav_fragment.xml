@@ -5,11 +5,22 @@
 
     <data>
 
+        <import type="com.k3labs.githubbrowser.vo.Status" />
+
         <import type="com.k3labs.githubbrowser.vo.RepoAndFav" />
 
         <variable
-            name="callback"
+            name="reposResource"
+            type="com.k3labs.githubbrowser.vo.Resource" />
+
+        <variable
+            name="retryCallback"
             type="com.k3labs.githubbrowser.ui.common.RetryCallback" />
+
+        <variable
+            name="emptyCallback"
+            type="com.k3labs.githubbrowser.ui.common.EmptyStateCallback" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,8 +40,43 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:visibleIf="@{reposResource.status != Status.ERROR}"
             tools:listitem="@layout/repo_list_item" />
 
+        <include
+            android:id="@+id/loading_state"
+            layout="@layout/loading_state"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:callback="@{() -> retryCallback.retry()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:resource="@{reposResource}"
+            tools:visibility="visible" />
+
+        <include
+            android:id="@+id/empty_state"
+            layout="@layout/empty_state"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:actiontitle="@{@string/empty_state_show_explore}"
+            app:actionvisible="@{true}"
+            app:callback="@{() -> emptyCallback.invoke()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:message="@{@string/empty_state_no_repos}"
+            app:messagesecondary="@{@string/empty_state_fav_no_repos}"
+            app:resource="@{reposResource}"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

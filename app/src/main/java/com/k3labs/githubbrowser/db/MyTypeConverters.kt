@@ -33,7 +33,11 @@ class MyTypeConverters {
         return data?.let {
             it.split(",").map {
                 try {
-                    it.toInt()
+                    if (it.isNotEmpty()) {
+                        it.toInt()
+                    } else {
+                        null
+                    }
                 } catch (ex: NumberFormatException) {
                     Timber.e(ex, "Cannot convert $it to number")
                     null

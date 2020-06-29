@@ -4,10 +4,10 @@ import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import com.k3labs.githubbrowser.repository.FavRepoRepository
 import com.k3labs.githubbrowser.repository.RepoRepository
-import com.k3labs.githubbrowser.util.AbsentLiveData
 import com.k3labs.githubbrowser.vo.RepoAndFav
 import com.k3labs.githubbrowser.vo.Resource
 import com.k3labs.githubbrowser.vo.Status
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -17,18 +17,19 @@ class ExploreViewModel @Inject constructor(
     private val favRepoRepository: FavRepoRepository
 ) : ViewModel() {
 
-    private val _query = MutableLiveData<String>()
+    private val _query = MutableLiveData<String>("")
     private val nextPageHandler = NextPageHandler(repoRepository)
     val query: LiveData<String> = _query
 
     val results: LiveData<Resource<List<RepoAndFav>?>> = _query.switchMap { search ->
         if (search.isBlank()) {
-            AbsentLiveData.create()
+            flow<Resource<List<RepoAndFav>?>> {
+                emit(Resource.success(listOf()))
+            }.asLiveData() //AbsentLiveData.create()
         } else {
             repoRepository.search(search).asLiveData()
         }
     }
-
 
     val loadMoreStatus: LiveData<LoadMoreState>
         get() = nextPageHandler.loadMoreState

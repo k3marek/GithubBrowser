@@ -96,7 +96,22 @@ inline fun <ResultType, RequestType : Any> networkBoundResourceForNetworkRespons
                 is NetworkResponse.Success -> {
                     saveFetchResult(processResponse(result))
                 }
-                else -> (result as NetworkResponse.Success).body.let { saveFetchResult(it) }
+                is NetworkResponse.NetworkError -> {
+                    Resource.error(
+                        result.error,
+                        result
+                    )
+                }
+                is NetworkResponse.UnknownError -> {
+                    Resource.error(
+                        result.error,
+                        result
+                    )
+                }
+                is NetworkResponse.ApiError -> Resource.error(
+                    "API error",
+                    result.body
+                )
             }
             query().map { Resource.success(it) }
         } catch (throwable: Throwable) {

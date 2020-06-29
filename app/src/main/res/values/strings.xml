@@ -12,7 +12,7 @@
     <string name="search_hint">Search Github repos</string>
     <string name="retry">Retry</string>
     <string name="unknown_error">Unknown error</string>
-    <string name="empty_search_result">No results for<b>%s</b></string>
+    <string name="empty_search_result">No results for <b>%s</b></string>
 
     <string name="menu_switch_fav">Switch fav</string>
 
@@ -20,4 +20,15 @@
     <string name="a11y_contributor_name">User name</string>
     <string name="a11y_switch_fav_btn">Switch fav button</string>
 
+    <string name="default_empty_msg">Empty</string>
+    <string name="default_empty_secondary_msg">Search</string>
+    <string name="default_empty_action_search">Search</string>
+
+    <string name="empty_state_show_explore">Show search</string>
+
+    <string name="empty_state_no_repos">No repos</string>
+
+    <string name="empty_state_explore_no_repos">Searched repos will show here</string>
+
+    <string name="empty_state_fav_no_repos">Fav repos will show here</string>
 </resources>
