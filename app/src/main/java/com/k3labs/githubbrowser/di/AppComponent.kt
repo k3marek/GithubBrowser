@@ -2,7 +2,9 @@ package com.k3labs.githubbrowser.di
 
 import android.app.Application
 import com.k3labs.githubbrowser.GithubBrowserApp
+import com.k3labs.githubbrowser.db.GithubBrowserDb
 import com.k3labs.githubbrowser.db.MyTypeConverters
+import com.squareup.moshi.Moshi
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -13,8 +15,7 @@ import javax.inject.Singleton
     modules = [
         AndroidInjectionModule::class,
         AppModule::class,
-        MainActivityModule::class,
-        AssistedInjectBuilderModule::class]
+        MainActivityModule::class]
 )
 interface AppComponent {
     @Component.Builder
@@ -31,8 +32,8 @@ interface AppComponent {
 
     //exposed components
 
-    fun workerFactory(): InjectingWorkerFactory
+    fun getDb(): GithubBrowserDb
 
-    fun vmFactory(): InjectingSavedStateViewModelFactory
+    fun getMoshi(): Moshi
 }
 

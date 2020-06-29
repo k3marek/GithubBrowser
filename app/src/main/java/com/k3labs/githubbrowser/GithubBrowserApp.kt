@@ -2,8 +2,10 @@ package com.k3labs.githubbrowser
 
 import android.app.Activity
 import androidx.multidex.MultiDexApplication
+import com.k3labs.githubbrowser.db.GithubBrowserDb
 import com.k3labs.githubbrowser.di.AppComponent
 import com.k3labs.githubbrowser.di.AppInjector
+import com.squareup.moshi.Moshi
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import timber.log.Timber
@@ -23,6 +25,14 @@ class GithubBrowserApp : MultiDexApplication(), HasActivityInjector {
     }
 
     override fun activityInjector() = dispatchingAndroidInjector
+
+    fun getDb(): GithubBrowserDb {
+        return appComponent.getDb()
+    }
+
+    fun getMoshi(): Moshi {
+        return appComponent.getMoshi()
+    }
 
     companion object {
         internal lateinit var appComponent: AppComponent

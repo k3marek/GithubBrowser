@@ -1,7 +1,6 @@
 package com.k3labs.githubbrowser.ui.user
 
 import androidx.lifecycle.*
-import com.k3labs.githubbrowser.di.AssistedSavedStateViewModelFactory
 import com.k3labs.githubbrowser.repository.FavRepoRepository
 import com.k3labs.githubbrowser.repository.RepoRepository
 import com.k3labs.githubbrowser.repository.UserRepository
@@ -9,12 +8,10 @@ import com.k3labs.githubbrowser.util.AbsentLiveData
 import com.k3labs.githubbrowser.vo.RepoAndFav
 import com.k3labs.githubbrowser.vo.Resource
 import com.k3labs.githubbrowser.vo.User
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserViewModel @AssistedInject constructor(
-    @Assisted val savedStateHandle: SavedStateHandle,
+class UserViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val favRepoRepository: FavRepoRepository,
     repoRepository: RepoRepository
@@ -64,7 +61,4 @@ class UserViewModel @AssistedInject constructor(
             }
         }
     }
-
-    @AssistedInject.Factory
-    interface Factory : AssistedSavedStateViewModelFactory<UserViewModel>
 }

@@ -25,11 +25,9 @@ import com.k3labs.githubbrowser.R
 import com.k3labs.githubbrowser.binding.FragmentDataBindingComponent
 import com.k3labs.githubbrowser.databinding.UserFragmentBinding
 import com.k3labs.githubbrowser.di.Injectable
-import com.k3labs.githubbrowser.di.InjectingSavedStateViewModelFactory
 import com.k3labs.githubbrowser.ui.common.RetryCallback
 import com.k3labs.githubbrowser.ui.explore.RepoAndFavListAdapter
 import com.k3labs.githubbrowser.util.autoCleared
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -44,16 +42,10 @@ class UserFragment : Fragment(), Injectable {
 
     var binding by autoCleared<UserFragmentBinding>()
 
-    @Inject
-    lateinit var abstractFactory: InjectingSavedStateViewModelFactory
-
-    val userViewModel: UserViewModel by viewModels { abstractFactory.create(this) }
+    val userViewModel: UserViewModel by viewModels { viewModelFactory }
 
     private val params by navArgs<UserFragmentArgs>()
     private var adapter by autoCleared<RepoAndFavListAdapter>()
-
-    //    private val params by navArgs<UserFragmentArgs>()
-    private var handler = Handler(Looper.getMainLooper())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

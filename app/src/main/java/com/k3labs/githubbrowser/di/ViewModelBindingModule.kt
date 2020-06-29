@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.k3labs.githubbrowser.ui.explore.ExploreViewModel
 import com.k3labs.githubbrowser.ui.fav.FavViewModel
 import com.k3labs.githubbrowser.ui.repo.RepoViewModel
+import com.k3labs.githubbrowser.ui.user.UserViewModel
 import com.k3labs.githubbrowser.viewmodel.ViewModelFactory
 import dagger.Binds
 import dagger.Module
@@ -26,11 +27,11 @@ abstract class ViewModelBindingModule {
     @IntoMap
     @ViewModelKey(FavViewModel::class)
     abstract fun bindFavViewModel(favViewModel: FavViewModel): ViewModel
-//
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(UserViewModel::class)
-//    abstract fun bindUserViewModel(userViewModel: UserViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UserViewModel::class)
+    abstract fun bindUserViewModel(userViewModel: UserViewModel): ViewModel
 
     @Binds
     @IntoMap
