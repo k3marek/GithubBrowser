@@ -1,5 +1,6 @@
 package com.k3labs.githubbrowser.api
 
+import com.k3labs.githubbrowser.api.calladapter.NetworkResponse
 import com.k3labs.githubbrowser.vo.Contributor
 import com.k3labs.githubbrowser.vo.Repo
 import com.k3labs.githubbrowser.vo.User
@@ -31,14 +32,12 @@ interface GithubService {
 
 
     @GET("search/repositories")
-    suspend fun searchRepos(@Query("q") query: String): RepoSearchResponse
+    suspend fun searchRepos(@Query("q") query: String): NetworkResponse<RepoSearchResponse, RepoSearchResponse>
 
     @GET("search/repositories")
     suspend fun searchRepos(
         @Query("q") query: String,
         @Query("page") page: Int
-    ): RepoSearchResponse
+    ): NetworkResponse<RepoSearchResponse, RepoSearchResponse>
 
-//    @GET("users/{login}")
-//    suspend fun getUserSuspend(@Path("login") login: String): User
 }

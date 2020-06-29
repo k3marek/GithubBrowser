@@ -1,11 +1,10 @@
 package com.k3labs.githubbrowser.repository
 
-import androidx.lifecycle.LiveData
 import androidx.room.withTransaction
-import com.k3labs.githubbrowser.AppExecutors
 import com.k3labs.githubbrowser.api.GithubService
 import com.k3labs.githubbrowser.db.GithubBrowserDb
 import com.k3labs.githubbrowser.db.RepoDao
+import com.k3labs.githubbrowser.db.RepoSearchResultDao
 import com.k3labs.githubbrowser.util.RateLimiter
 import com.k3labs.githubbrowser.vo.*
 import kotlinx.coroutines.flow.Flow
@@ -23,9 +22,9 @@ import javax.inject.Singleton
  */
 @Singleton
 class RepoRepository @Inject constructor(
-    private val appExecutors: AppExecutors,
     private val db: GithubBrowserDb,
     private val repoDao: RepoDao,
+    private val repoSearchResultDao: RepoSearchResultDao,
     private val githubService: GithubService
 ) {
     private val repoListRateLimit = RateLimiter<String>(1, TimeUnit.MINUTES)
@@ -89,14 +88,6 @@ class RepoRepository @Inject constructor(
                         )
                     )
                     repoDao.insertContributors(items)
-                    /*items.forEach {
-                        try {
-                            repoDao.insertContributors(it)
-                        } catch (e: Exception) {
-                            Timber.d("$it")
-                            e.printStackTrace()
-                        }
-                    }*/
                 }
             },
             shouldFetch = { data -> data == null || data.isEmpty() },
@@ -104,20 +95,18 @@ class RepoRepository @Inject constructor(
         )
     }
 
-    fun searchNextPage(query: String): LiveData<Resource<Boolean>> {
-        val fetchNextSearchPageTask = FetchNextSearchPageTask(
-            query = query,
-            githubService = githubService,
-            db = db
+    suspend fun searchNextPage(query: String): Flow<Resource<Boolean>> {
+        return fetchNextSearchPageTask(
+            query,
+            githubService,
+            db
         )
-        appExecutors.networkIO().execute(fetchNextSearchPageTask)
-        return fetchNextSearchPageTask.liveData
     }
 
     fun search(query: String): Flow<Resource<List<RepoAndFav>?>> {
-        return networkBoundResource(
+        return networkBoundResourceForNetworkResponse(
             query = {
-                repoDao.search(query).flatMapLatest { searchData ->
+                repoSearchResultDao.search(query).flatMapLatest { searchData ->
                     if (searchData != null) {
                         repoDao.loadOrdered(searchData.repoIds)
                     } else {
@@ -126,6 +115,11 @@ class RepoRepository @Inject constructor(
                 }
             },
             fetch = { githubService.searchRepos(query) },
+            processResponse = { response ->
+                val body = response.body
+                body.nextPage = response.nextPage
+                body
+            },
             saveFetchResult = { item ->
                 val repoIds = item.items.map { it.id }
                 val repoSearchResult = RepoSearchResult(
@@ -137,7 +131,7 @@ class RepoRepository @Inject constructor(
 
                 db.withTransaction {
                     repoDao.insertRepos(item.items)
-                    repoDao.insert(repoSearchResult)
+                    repoSearchResultDao.insert(repoSearchResult)
                 }
             },
             onFetchFailed = { throwable -> Timber.e(throwable) }

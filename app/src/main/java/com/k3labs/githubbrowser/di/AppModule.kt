@@ -8,12 +8,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.k3labs.githubbrowser.api.GithubService
-import com.k3labs.githubbrowser.db.FavReposDao
-import com.k3labs.githubbrowser.db.GithubBrowserDb
-import com.k3labs.githubbrowser.db.RepoDao
-import com.k3labs.githubbrowser.db.UserDao
+import com.k3labs.githubbrowser.db.*
 import com.k3labs.githubbrowser.util.DATABASE_NAME
-import com.k3labs.githubbrowser.util.LiveDataCallAdapterFactory
+import com.k3labs.githubbrowser.api.calladapter.LiveDataCallAdapterFactory
+import com.k3labs.githubbrowser.api.calladapter.NetworkResponseAdapterFactory
 import com.k3labs.githubbrowser.workers.SeedDatabaseWorker
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -47,21 +45,11 @@ class AppModule {
     @Provides
     fun provideHttpClient(): OkHttpClient {
         val httpTimeout: Long = 30
-//        val headerAuthorizationName = "Authorization"
-//        val headerAuthorizationValue = Credentials.basic("api", "api")
 
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BASIC
             })
-            /*.addInterceptor { chain ->
-                chain.proceed(
-                    chain.request().newBuilder().addHeader(
-                        headerAuthorizationName,
-                        headerAuthorizationValue
-                    ).build()
-                )
-            }*/
             .connectTimeout(httpTimeout, TimeUnit.SECONDS)
             .readTimeout(httpTimeout, TimeUnit.SECONDS)
             .writeTimeout(httpTimeout, TimeUnit.SECONDS)
@@ -75,6 +63,8 @@ class AppModule {
             .client(client)
             .baseUrl("https://api.github.com/")
             .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .build()
     }
@@ -110,6 +100,12 @@ class AppModule {
     @Provides
     fun provideRepoDao(db: GithubBrowserDb): RepoDao {
         return db.repoDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideRepoSearchResultDao(db: GithubBrowserDb): RepoSearchResultDao {
+        return db.repoSearchResultDao()
     }
 
     @Singleton

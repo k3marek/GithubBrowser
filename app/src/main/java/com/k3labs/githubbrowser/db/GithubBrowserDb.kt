@@ -29,6 +29,7 @@ import com.k3labs.githubbrowser.workers.SeedDatabaseWorker
 @TypeConverters(MyTypeConverters::class)
 abstract class GithubBrowserDb : RoomDatabase() {
     abstract fun repoDao(): RepoDao
+    abstract fun repoSearchResultDao(): RepoSearchResultDao
     abstract fun favReposDao(): FavReposDao
     abstract fun userDao(): UserDao
 

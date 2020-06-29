@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.k3labs.githubbrowser.AppExecutors
 import com.k3labs.githubbrowser.R
 import com.k3labs.githubbrowser.binding.FragmentDataBindingComponent
@@ -23,7 +24,6 @@ import com.k3labs.githubbrowser.di.Injectable
 import com.k3labs.githubbrowser.ui.common.RetryCallback
 import com.k3labs.githubbrowser.util.autoCleared
 import com.k3labs.githubbrowser.util.dismissKeyboard
-import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 class ExploreFragment : Fragment(), Injectable {
@@ -67,7 +67,11 @@ class ExploreFragment : Fragment(), Injectable {
             },
             navigateToDetailsCallback = {
                 navController().navigate(
-                    ExploreFragmentDirections.showRepo(it.repo.id, it.repo.owner.login,it.repo.name)
+                    ExploreFragmentDirections.showRepo(
+                        it.repo.id,
+                        it.repo.owner.login,
+                        it.repo.name
+                    )
                 )
             }
         )
@@ -87,7 +91,7 @@ class ExploreFragment : Fragment(), Injectable {
 
     private fun subscribeUi() {
         exploreViewModel.results.observe(viewLifecycleOwner, Observer { results ->
-            if (results.isAvailable()) {
+            if (results != null && results.isAvailable()) {
                 adapter.submitList(results.data)
             }
         })

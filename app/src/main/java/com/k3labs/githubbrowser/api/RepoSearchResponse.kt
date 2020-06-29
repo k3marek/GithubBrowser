@@ -10,9 +10,9 @@ import com.squareup.moshi.Json
  * column.
  */
 data class RepoSearchResponse(
-    @field:Json(name ="total_count")
+    @Json(name = "total_count")
     val total: Int = 0,
-    @field:Json(name="items")
+    @Json(name = "items")
     val items: List<Repo>
 ) {
     var nextPage: Int? = null

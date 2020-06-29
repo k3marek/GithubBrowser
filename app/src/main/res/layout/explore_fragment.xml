@@ -34,7 +34,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/bottom_navigation_view_height">
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"

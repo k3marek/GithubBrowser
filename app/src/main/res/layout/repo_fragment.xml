@@ -30,7 +30,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_marginBottom="@dimen/bottom_navigation_view_height">
 
         <TextView
             android:id="@+id/repo_item_title_tv"

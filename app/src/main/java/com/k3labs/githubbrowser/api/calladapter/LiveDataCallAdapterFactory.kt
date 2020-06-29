@@ -1,12 +1,12 @@
-package com.k3labs.githubbrowser.util
+package com.k3labs.githubbrowser.api.calladapter
 
 import androidx.lifecycle.LiveData
-import com.k3labs.githubbrowser.api.ApiResponse
 import retrofit2.CallAdapter
 import retrofit2.CallAdapter.Factory
 import retrofit2.Retrofit
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
+
 
 class LiveDataCallAdapterFactory : Factory() {
     override fun get(
@@ -26,6 +26,8 @@ class LiveDataCallAdapterFactory : Factory() {
             throw IllegalArgumentException("resource must be parameterized")
         }
         val bodyType = getParameterUpperBound(0, observableType)
-        return LiveDataCallAdapter<Any>(bodyType)
+        return LiveDataCallAdapter<Any>(
+            bodyType
+        )
     }
 }

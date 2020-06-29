@@ -5,7 +5,6 @@ import androidx.room.*
 import com.k3labs.githubbrowser.vo.Contributor
 import com.k3labs.githubbrowser.vo.Repo
 import com.k3labs.githubbrowser.vo.RepoAndFav
-import com.k3labs.githubbrowser.vo.RepoSearchResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 
@@ -57,11 +56,6 @@ abstract class RepoDao {
     )
     abstract fun loadRepositories(owner: String): Flow<List<RepoAndFav>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insert(result: RepoSearchResult)
-
-    @Query("SELECT * FROM RepoSearchResult WHERE `query` = :query")
-    abstract fun search(query: String): Flow<RepoSearchResult?>
 
     fun loadOrdered(repoIds: List<Int>): Flow<List<RepoAndFav>> {
         val order = SparseIntArray()
@@ -76,8 +70,5 @@ abstract class RepoDao {
     @Transaction
     @Query("SELECT * FROM repo WHERE id IN (:repoIds)")
     protected abstract fun loadById(repoIds: List<Int>): Flow<List<RepoAndFav>>
-
-    @Query("SELECT * FROM RepoSearchResult WHERE `query` = :query")
-    abstract fun findSearchResult(query: String): RepoSearchResult?
 
 }

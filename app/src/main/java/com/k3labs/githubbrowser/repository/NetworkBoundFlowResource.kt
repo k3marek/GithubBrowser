@@ -1,5 +1,6 @@
 package com.k3labs.githubbrowser.repository
 
+import com.k3labs.githubbrowser.api.calladapter.NetworkResponse
 import com.k3labs.githubbrowser.vo.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
@@ -63,6 +64,40 @@ inline fun <ResultType, RequestType> networkBoundResource(
 
         try {
             saveFetchResult(fetch())
+            query().map { Resource.success(it) }
+        } catch (throwable: Throwable) {
+            onFetchFailed(throwable)
+            query().map { Resource.error(throwable, it) }
+        }
+    } else {
+        query().map { Resource.success(it) }
+    }
+
+    emitAll(flow)
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+inline fun <ResultType, RequestType : Any> networkBoundResourceForNetworkResponse(
+    crossinline query: () -> Flow<ResultType>,
+    crossinline fetch: suspend () -> NetworkResponse<RequestType, RequestType>,
+    crossinline processResponse: suspend (response: NetworkResponse.Success<RequestType>) -> RequestType = { response -> response.body },
+    crossinline saveFetchResult: suspend (RequestType) -> Unit,
+    crossinline onFetchFailed: (Throwable) -> Unit = { Unit },
+    crossinline shouldFetch: (ResultType) -> Boolean = { true }
+) = flow<Resource<ResultType>> {
+    emit(Resource.loading(null))
+    val data = query().first()
+
+    val flow = if (shouldFetch(data)) {
+        emit(Resource.loading(data))
+
+        try {
+            when (val result = fetch()) {
+                is NetworkResponse.Success -> {
+                    saveFetchResult(processResponse(result))
+                }
+                else -> (result as NetworkResponse.Success).body.let { saveFetchResult(it) }
+            }
             query().map { Resource.success(it) }
         } catch (throwable: Throwable) {
             onFetchFailed(throwable)

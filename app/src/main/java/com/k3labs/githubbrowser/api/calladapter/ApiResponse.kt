@@ -1,4 +1,4 @@
-package com.k3labs.githubbrowser.api
+package com.k3labs.githubbrowser.api.calladapter
 
 import retrofit2.Response
 import timber.log.Timber
@@ -8,11 +8,15 @@ import java.util.regex.Pattern
  * Common class used by API responses.
  * @param <T> the type of the response object
 </T> */
-@Suppress("unused") // T is used in extending classes
+// T is used in extending classes
+@Suppress("unused")
+@Deprecated("Use NetworkResponse")
 sealed class ApiResponse<T> {
     companion object {
         fun <T> create(error: Throwable): ApiErrorResponse<T> {
-            return ApiErrorResponse(error.message ?: "unknown error")
+            return ApiErrorResponse(
+                error.message ?: "unknown error"
+            )
         }
 
         fun <T> create(response: Response<T>): ApiResponse<T> {
@@ -33,7 +37,9 @@ sealed class ApiResponse<T> {
                 } else {
                     msg
                 }
-                ApiErrorResponse(errorMsg ?: "unknown error")
+                ApiErrorResponse(
+                    errorMsg ?: "unknown error"
+                )
             }
         }
     }
@@ -86,7 +92,6 @@ data class ApiSuccessResponse<T>(
             }
             return links
         }
-
     }
 }
 

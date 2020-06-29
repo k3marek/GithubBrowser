@@ -16,7 +16,6 @@ import javax.inject.Singleton
  * webservice requests).
  */
 @Singleton
-@Deprecated("")
 open class AppExecutors(
     private val diskIO: Executor,
     private val networkIO: Executor,

@@ -43,9 +43,11 @@ class ExploreViewModel @Inject constructor(
     }
 
     fun loadNextPage() {
-        _query.value?.let {
-            if (it.isNotBlank()) {
-                nextPageHandler.queryNextPage(it)
+        viewModelScope.launch {
+            _query.value?.let {
+                if (it.isNotBlank()) {
+                    nextPageHandler.queryNextPage(it)
+                }
             }
         }
     }
@@ -91,13 +93,13 @@ class ExploreViewModel @Inject constructor(
             reset()
         }
 
-        fun queryNextPage(query: String) {
+        suspend fun queryNextPage(query: String) {
             if (this.query == query) {
                 return
             }
             unregister()
             this.query = query
-            nextPageLiveData = repository.searchNextPage(query)
+            nextPageLiveData = repository.searchNextPage(query).asLiveData()
             loadMoreState.value = LoadMoreState(
                 isRunning = true,
                 errorMessage = null
