@@ -10,4 +10,5 @@
 - kotlin_mvvm_dagger - kotlin, coroutines, dagger w/o assisted inject, no clean arch
 - todo:  
   - kotlin_mvvm_clean_dagger
+  - kotlin_mvvm_clean_dagger_assisted_multimodule
   - java_mvp_clean_dagger
